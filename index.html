@@ -1,0 +1,784 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found]){display:none!important}</style></head><body>
+<title>LinkTop Field Manual</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --teal:#007581; --teal-dim:#0b7e8c; --blue:#00A0DD; --green:#17A96B;
+    --orange:#E8940A; --red:#E03E52; --ink:#1F3E5A; --sub:#6A8199;
+    --bg:#F4F6F8; --card:#ffffff; --border:#E2E8F0; --border-soft:#EDF1F4;
+    --code-bg:#0f2027; --code-text:#d7e4ea; --code-key:#7fd6c8; --chip-bg:#EAF4F5;
+    --shadow: 0 1px 2px rgba(31,62,90,.06), 0 8px 24px -16px rgba(31,62,90,.18);
+    --accent-soft:#E6F3F4;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --teal:#28b6c2; --teal-dim:#2fc6d2; --blue:#4fc3f7; --green:#3ecf8e;
+      --orange:#f0a93a; --red:#ef6b7c; --ink:#e8f0f5; --sub:#92a9bb;
+      --bg:#0d1720; --card:#132430; --border:#213748; --border-soft:#1b2e3c;
+      --code-bg:#06121a; --code-text:#cfe6ec; --code-key:#7fe3d4; --chip-bg:#16343a;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 28px -18px rgba(0,0,0,.6);
+      --accent-soft:#102a2d;
+    }
+  }
+  :root[data-theme="dark"]{
+    --teal:#28b6c2; --teal-dim:#2fc6d2; --blue:#4fc3f7; --green:#3ecf8e;
+    --orange:#f0a93a; --red:#ef6b7c; --ink:#e8f0f5; --sub:#92a9bb;
+    --bg:#0d1720; --card:#132430; --border:#213748; --border-soft:#1b2e3c;
+    --code-bg:#06121a; --code-text:#cfe6ec; --code-key:#7fe3d4; --chip-bg:#16343a;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 28px -18px rgba(0,0,0,.6);
+    --accent-soft:#102a2d;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'DM Sans', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.disp{ font-family:'Archivo', ui-sans-serif, system-ui, sans-serif; text-wrap:balance; }
+  code, pre, .mono { font-family:'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace; }
+
+  a{ color:var(--teal); }
+
+  /* ---------- Header ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:20;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .topbar-inner{
+    max-width:1120px; margin:0 auto; padding:16px 24px;
+    display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+  }
+  .brand{ display:flex; align-items:center; gap:10px; font-family:'Archivo'; font-weight:800; font-size:16px; color:var(--ink); white-space:nowrap;}
+  .brand .mark{
+    width:30px; height:30px; border-radius:9px;
+    background:linear-gradient(145deg, var(--teal), var(--blue));
+    display:flex; align-items:center; justify-content:center; color:#fff; font-size:15px; font-weight:800;
+    box-shadow: 0 4px 10px -4px color-mix(in srgb, var(--teal) 70%, transparent);
+  }
+  .searchwrap{ flex:1; min-width:220px; position:relative; }
+  #q{
+    width:100%; padding:9px 14px 9px 36px; border-radius:10px; border:1px solid var(--border);
+    background:var(--card); color:var(--ink); font-family:'DM Sans'; font-size:13.5px; outline:none;
+  }
+  #q:focus{ border-color:var(--teal); box-shadow:0 0 0 3px var(--accent-soft); }
+  .searchwrap svg{ position:absolute; left:11px; top:50%; transform:translateY(-50%); opacity:.55; }
+  #count{ font-size:12px; color:var(--sub); white-space:nowrap; }
+
+  .catnav{
+    max-width:1120px; margin:0 auto; padding:0 24px 14px;
+    display:flex; gap:7px; flex-wrap:wrap;
+  }
+  .catnav a{
+    text-decoration:none; font-size:12px; font-weight:600; color:var(--sub);
+    background:var(--card); border:1px solid var(--border); padding:6px 11px; border-radius:999px;
+    display:inline-flex; align-items:center; gap:6px; transition:border-color .15s, color .15s;
+  }
+  .catnav a:hover{ border-color:var(--teal); color:var(--teal); }
+  .catnav .dot{ width:7px; height:7px; border-radius:50%; }
+
+  /* ---------- Hero strip ---------- */
+  .hero{ max-width:1120px; margin:28px auto 8px; padding:0 24px; }
+  .hero h1{ font-size:28px; font-weight:800; margin:0 0 8px; letter-spacing:-.01em; }
+  .hero p{ margin:0; color:var(--sub); font-size:14.5px; max-width:66ch; line-height:1.55; }
+  .hero .meta{ margin-top:14px; display:flex; gap:10px; flex-wrap:wrap; }
+  .meta .pill{
+    font-size:11.5px; font-weight:600; color:var(--teal); background:var(--accent-soft);
+    padding:5px 10px; border-radius:999px; font-family:'DM Sans';
+  }
+
+  /* ---------- Content ---------- */
+  main{ max-width:1120px; margin:0 auto; padding:8px 24px 80px; }
+
+  section.category{ margin-top:48px; scroll-margin-top:132px; }
+  .cat-head{ display:flex; align-items:baseline; gap:12px; margin-bottom:4px; }
+  .cat-head h2{ font-size:20px; font-weight:800; margin:0; }
+  .cat-head .n{ font-size:12px; color:var(--sub); font-weight:600; }
+  .cat-sub{ color:var(--sub); font-size:13.5px; margin:4px 0 20px; max-width:72ch; line-height:1.55;}
+
+  .qgrid{ display:flex; flex-direction:column; gap:10px; }
+
+  details.qa{
+    background:var(--card); border:1px solid var(--border); border-radius:14px;
+    box-shadow:var(--shadow); overflow:hidden;
+  }
+  details.qa[open]{ border-color:color-mix(in srgb, var(--teal) 35%, var(--border)); }
+  details.qa > summary{
+    list-style:none; cursor:pointer; padding:15px 18px; display:flex; gap:12px; align-items:flex-start;
+    font-family:'Archivo'; font-weight:600; font-size:14.5px; color:var(--ink); line-height:1.4;
+  }
+  details.qa > summary::-webkit-details-marker{ display:none; }
+  .qnum{
+    flex:none; width:24px; height:24px; border-radius:7px; background:var(--chip-bg); color:var(--teal);
+    font-family:'JetBrains Mono'; font-size:11px; font-weight:600; display:flex; align-items:center; justify-content:center;
+    margin-top:1px;
+  }
+  .chev{ margin-left:auto; flex:none; transition:transform .2s; opacity:.5; }
+  details.qa[open] .chev{ transform:rotate(90deg); opacity:.9; }
+  .qa-body{
+    padding:0 18px 18px 54px; color:var(--ink); font-size:13.8px; line-height:1.68;
+  }
+  .qa-body p{ margin:0 0 12px; }
+  .qa-body p:last-child{ margin-bottom:0; }
+  .qa-body ul{ margin:0 0 12px; padding-left:20px; }
+  .qa-body li{ margin-bottom:6px; }
+  .qa-body code.inline{
+    background:var(--chip-bg); color:var(--teal-dim); padding:1.5px 6px; border-radius:5px; font-size:12.3px;
+  }
+  .file-tag{
+    display:inline-block; font-family:'JetBrains Mono'; font-size:11px; color:var(--sub);
+    background:var(--border-soft); padding:2px 8px; border-radius:6px; margin:0 0 10px;
+  }
+
+  pre.code{
+    background:var(--code-bg); color:var(--code-text); border-radius:10px; padding:14px 16px;
+    overflow-x:auto; font-size:12.3px; line-height:1.62; margin:10px 0 12px;
+  }
+  pre.code .c{ color:#7f93a0; font-style:italic; } /* comment */
+  pre.code .k{ color:var(--code-key); } /* keyword */
+  pre.code .s{ color:#f0c987; } /* string */
+  pre.code .f{ color:#9fc6ff; } /* function/type */
+
+  .tag-row{ display:flex; gap:6px; flex-wrap:wrap; margin:0 0 10px 54px; }
+  .tag{
+    font-size:10.5px; font-weight:700; letter-spacing:.03em; text-transform:uppercase;
+    padding:3px 8px; border-radius:6px;
+  }
+  .tag.gotcha{ background:color-mix(in srgb, var(--red) 14%, transparent); color:var(--red); }
+  .tag.core{ background:color-mix(in srgb, var(--blue) 14%, transparent); color:var(--blue); }
+  .tag.flow{ background:color-mix(in srgb, var(--green) 14%, transparent); color:var(--green); }
+
+  .casecard{
+    background:var(--card); border:1px solid var(--border); border-radius:14px; box-shadow:var(--shadow);
+    padding:18px 20px; margin-bottom:14px;
+  }
+  .casecard h3{ font-size:14.5px; margin:0 0 4px; }
+  .casecard .sym{ font-size:12.5px; color:var(--sub); margin:0 0 12px; }
+  .case-grid{ display:grid; grid-template-columns:1fr; gap:10px; }
+  @media (min-width:760px){ .case-grid{ grid-template-columns:1fr 1fr; } }
+  .case-col .lbl{ font-size:10.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--sub); margin-bottom:6px; }
+  .case-col.bad .lbl{ color:var(--red); }
+  .case-col.good .lbl{ color:var(--green); }
+  .case-col p{ font-size:13px; line-height:1.55; margin:0 0 8px; color:var(--ink); }
+
+  .flowsteps{ counter-reset:step; display:flex; flex-direction:column; gap:0; }
+  .flowstep{ position:relative; padding:0 0 22px 34px; }
+  .flowstep:last-child{ padding-bottom:0; }
+  .flowstep::before{
+    counter-increment:step; content:counter(step);
+    position:absolute; left:0; top:0; width:24px; height:24px; border-radius:50%;
+    background:var(--teal); color:#fff; font-family:'JetBrains Mono'; font-size:11px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .flowstep::after{
+    content:''; position:absolute; left:11.5px; top:24px; bottom:0; width:1px; background:var(--border);
+  }
+  .flowstep:last-child::after{ display:none; }
+  .flowstep h4{ margin:0 0 4px; font-size:14px; font-family:'Archivo'; font-weight:700; }
+  .flowstep p{ margin:0; font-size:13px; color:var(--sub); line-height:1.6; }
+  .flowstep .ftag{ font-family:'JetBrains Mono'; font-size:11px; color:var(--teal-dim); }
+
+  .flowcard{ background:var(--card); border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow); padding:22px 24px; margin-bottom:18px; }
+  .flowcard > h3{ font-size:16px; margin:0 0 4px; }
+  .flowcard > .fdesc{ font-size:13px; color:var(--sub); margin:0 0 20px; line-height:1.55; }
+
+  footer{
+    max-width:1120px; margin:0 auto; padding:30px 24px 60px; color:var(--sub); font-size:12.5px;
+    border-top:1px solid var(--border); margin-top:40px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+  }
+
+  [hidden]{ display:none !important; }
+
+  ::selection{ background:color-mix(in srgb, var(--teal) 30%, transparent); }
+
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
+</style>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><span class="mark">LT</span>LinkTop Field Manual</div>
+    <div class="searchwrap">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="q" type="text" placeholder="Search questions — e.g. rememberSaveable, WebView, Retrofit…" autocomplete="off" />
+    </div>
+    <span id="count"></span>
+  </div>
+  <div class="catnav" id="catnav"></div>
+</div>
+
+<div class="hero">
+  <h1>Onboarding Q&amp;A for the Hospital&nbsp;at&nbsp;Home mobile app</h1>
+  <p>A question bank for engineers joining the <code class="inline" style="background:var(--chip-bg);color:var(--teal-dim);padding:1.5px 6px;border-radius:5px;">com.example.linktop</code> codebase — Kotlin fundamentals, Jetpack Compose patterns, the app's own architecture, full feature-flow walkthroughs, real physical-device/Bluetooth integration, and real bugs pulled straight from this repo's history, written as teaching cases.</p>
+  <div class="meta">
+    <span class="pill">40 questions</span>
+    <span class="pill">7 sections</span>
+    <span class="pill">5 real bug case studies</span>
+  </div>
+</div>
+
+<main id="main"></main>
+
+<footer>
+  <span>Internal reference · Hospital at Home · Android / Kotlin / Jetpack Compose</span>
+  <span>Use <strong>⌘/Ctrl‑F</strong>‑style search above, or jump by topic</span>
+</footer>
+
+<script>
+const DATA = [
+  {
+    id: "kotlin", title: "Kotlin Fundamentals", color: "var(--teal)",
+    sub: "The language features that show up in nearly every file in this codebase — not abstract trivia, but the exact idioms used in SavedReminder, VitalCard, and every repository object.",
+    items: [
+      {
+        q: "What does it mean for Kotlin to be “null-safe”, and where does this codebase lean on it hardest?",
+        a: `<p>Every type is non-nullable by default (<code class="inline">String</code>) unless explicitly marked nullable (<code class="inline">String?</code>). The compiler refuses to compile code that could dereference a null without a check, which eliminates most <code class="inline">NullPointerException</code>s <em>at compile time</em> — except when you force the issue.</p>
+        <p>The non-null assertion operator <code class="inline">!!</code> tells the compiler "trust me, this isn't null right now" — and if you're wrong, it throws a <code class="inline">NullPointerException</code> at runtime, exactly like Java would. This repo hit that directly: <code class="inline">CallbackListScreen.kt</code>'s cancel-confirmation dialog captured <code class="inline">cancelTarget!!.id</code> <em>inside</em> a <code class="inline">coroutineScope.launch { }</code> block, while the very next line set <code class="inline">cancelTarget = null</code> synchronously. Since <code class="inline">launch</code> schedules its body to run later (not immediately), by the time the coroutine actually executed, <code class="inline">cancelTarget</code> was already null — crashing the app. See the full case study in the <a href="#cases">Real Bug Case Studies</a> section.</p>
+        <p>The safe-call operator <code class="inline">?.</code> and the Elvis operator <code class="inline">?:</code> are how you navigate nullables without crashing: <code class="inline">patient.phone ?: "Patient"</code> reads as "use the phone if present, otherwise this fallback" — you'll see this pattern in nearly every display-name fallback chain in the backend and the mobile repositories alike.</p>`
+      },
+      {
+        q: "What's a `data class`, and why does almost every model in this app use one?",
+        a: `<p>A <code class="inline">data class</code> auto-generates <code class="inline">equals()</code>, <code class="inline">hashCode()</code>, <code class="inline">toString()</code>, and a <code class="inline">copy()</code> method from its constructor properties — all the boilerplate you'd otherwise hand-write for a plain value container.</p>
+        <p><code class="inline">copy()</code> is the one engineers new to Kotlin undervalue most: it lets you produce a modified clone without mutating the original, which is exactly how immutable state updates are meant to work in Compose. Example straight from this repo:</p>
+        <pre class="code">data class SavedReminder(
+    val name: String, val dose: String, val form: String,
+    val time: String, val frequency: String, val days: Set&lt;String&gt;,
+    val whenToTake: String, val route: String = "Oral"
+)
+
+<span class="c">// elsewhere, updating just one field:</span>
+val updated = reminder.copy(dose = "20mg")</pre>
+        <p>Compare this to <code class="inline">AttachedFile(name, fileSize, uploading = true).copy(id = result.id, uploading = false)</code> in <code class="inline">CreateCallbackScreen.kt</code> — the exact pattern used to flip an in-flight upload to "done" without touching anything else about that row.</p>`
+      },
+      {
+        q: "Explain `sealed class` / `sealed interface` and why they're everywhere in state-representation code.",
+        a: `<p>A sealed type restricts which classes can extend it to a known, closed set — all declared in the same file (or, with sealed interfaces, anywhere in the same module). The payoff is at the <code class="inline">when</code> expression: the compiler knows every possible branch, so a non-exhaustive <code class="inline">when</code> is a compile error, not a runtime surprise.</p>
+        <p>This is the standard shape for "loading state" in this codebase — see <code class="inline">LoadState</code> (<code class="inline">IDLE / LOADING / LOADED / ERROR</code>), used identically across <code class="inline">CallbackRepository</code>, <code class="inline">TeleconsultRepository</code>, and every other repository singleton. A screen does:</p>
+        <pre class="code">when (loadState) {
+    LoadState.LOADING, LoadState.IDLE -&gt; LoadingSpinner()
+    LoadState.ERROR -&gt; ErrorState(onRetry = { ... })
+    LoadState.LOADED -&gt; Content(data)
+}</pre>
+        <p>Add a fifth state later, forget a branch, and the build fails immediately — that's the whole point.</p>`
+      },
+      {
+        q: "What are extension functions, and where would I actually reach for one here?",
+        a: `<p>An extension function lets you add a method to a type you don't own, without subclassing or wrapping it — <code class="inline">fun PreferredTime.displayLabel(): String</code> adds a <code class="inline">.displayLabel()</code> method directly onto the <code class="inline">PreferredTime</code> enum from <code class="inline">CallbackSharedComponents.kt</code>, callable as <code class="inline">PreferredTime.MORNING.displayLabel()</code> anywhere it's imported.</p>
+        <p>They're ideal for presentation-layer helpers on top of data/network types you shouldn't pollute with UI concerns — formatting, mapping a backend enum string to a UI label, deriving a computed property. <code class="inline">CallbackQuestionDto.isAnswered(answer)</code> in <code class="inline">HealthCheckScreen.kt</code> is another real example: it's a private extension that decides, per question type, whether a draft answer counts as "complete enough to move on."</p>`
+      },
+      {
+        q: "What do `apply`, `let`, `run`, `also`, and `with` each actually do, and how do you choose?",
+        a: `<p>These are Kotlin's "scope functions" — they all let you operate on an object within a lambda, but differ in what they return and how the object is referenced inside:</p>
+        <ul>
+          <li><strong><code class="inline">apply</code></strong> — returns the receiver itself (<code class="inline">this</code> inside); used for configuring an object right after construction. <code class="inline">wv.settings.apply { javaScriptEnabled = true; domStorageEnabled = true }</code> in <code class="inline">MeetingActivity.kt</code> is a textbook case — set a bunch of properties, keep the original reference.</li>
+          <li><strong><code class="inline">let</code></strong> — returns the lambda's result, receiver is <code class="inline">it</code>; most common for null-safe chaining: <code class="inline">uri?.let { context.contentResolver.getType(it) }</code> from <code class="inline">CreateCallbackScreen.kt</code>'s file picker.</li>
+          <li><strong><code class="inline">run</code></strong> — like <code class="inline">let</code> but receiver is <code class="inline">this</code>; good for "compute a value from a block of setup logic."</li>
+          <li><strong><code class="inline">also</code></strong> — returns the receiver, receiver is <code class="inline">it</code>; used for a side effect that doesn't change the object, like logging: <code class="inline">return WebView(ctx).also { wv -&gt; /* configure wv, still return the WebView */ }</code> — exactly how <code class="inline">buildMeetingWebView</code> is structured.</li>
+          <li><strong><code class="inline">with</code></strong> — not an extension, takes the receiver as a parameter; used when you're not chaining off a nullable.</li>
+        </ul>`
+      },
+      {
+        q: "What is a `by` delegate, and what's the one you'll type a hundred times a day in Compose code?",
+        a: `<p><code class="inline">by</code> delegates property access to another object implementing <code class="inline">getValue</code>/<code class="inline">setValue</code>. In Compose, <code class="inline">var currentQuestion by remember { mutableIntStateOf(0) }</code> uses this so you can read/write <code class="inline">currentQuestion</code> like a plain <code class="inline">Int</code>, while under the hood every write triggers recomposition through the underlying <code class="inline">MutableState</code>.</p>
+        <p>Without <code class="inline">by</code>, you'd be writing <code class="inline">val currentQuestion = remember { mutableIntStateOf(0) }</code> and then <code class="inline">currentQuestion.value++</code> everywhere — functionally identical, just noisier.</p>`
+      },
+      {
+        q: "How do default arguments and named arguments change how you design a function signature?",
+        a: `<p>Kotlin lets a parameter declare a default (<code class="inline">fun fetch(lang: String = LocaleHelper.currentLangCode())</code>) so most call sites can omit it, and combined with named arguments, call sites read like documentation: <code class="inline">make_user(role_code = "hah_physician", first_name = "Sarah")</code> (yes, this shows up in the Python test suite too, but the idea carries — this codebase's Kotlin composables lean on named args heavily for readability, e.g. every <code class="inline">PrimaryButton(text = ..., onClick = ..., modifier = ...)</code> call).</p>
+        <p>This avoids the classic "telescoping constructor" problem where adding a 6th optional parameter would otherwise force every existing positional call site to be rewritten.</p>`
+      },
+      {
+        q: "What's the difference between `val` and `var`, and why does immutability matter more in Compose than in typical Android code?",
+        a: `<p><code class="inline">val</code> is a read-only reference (the object it points to may still be mutable, e.g. a <code class="inline">MutableList</code>); <code class="inline">var</code> can be reassigned. Compose recomposition is driven by observing <em>state reads</em> — if you hand a Composable a plain mutable field that isn't a <code class="inline">State&lt;T&gt;</code>, Compose has no way to know it changed, and the UI silently goes stale.</p>
+        <p>This is why <code class="inline">val attachments = CallbackRepository.draftDocuments</code> in <code class="inline">CreateCallbackScreen.kt</code> is a <code class="inline">val</code> pointing at a <code class="inline">mutableStateListOf&lt;AttachedFile&gt;()</code> — the reference itself never needs to change, but the list's observable contents do, and Compose tracks mutations to that list automatically.</p>`
+      },
+      {
+        q: "What does `when` give you over a chain of `if / else if`?",
+        a: `<p>Exhaustiveness checking against sealed types/enums (see above), cleaner multi-branch matching without repeating the subject, and it works as an expression, not just a statement — <code class="inline">val label = when (question.type) { "multi_choice" -&gt; "Select all" ... }</code> directly produces a value rather than requiring a mutable variable you assign inside each branch.</p>`
+      },
+      {
+        q: "What's destructuring, and where does this repo use it?",
+        a: `<p>Destructuring unpacks a value into multiple variables in one line, via <code class="inline">component1()</code>/<code class="inline">component2()</code> (which <code class="inline">data class</code> and <code class="inline">Pair</code>/<code class="inline">Map.Entry</code> provide automatically). <code class="inline">val (fileName, fileSize) = context.queryNameAndSize(it)</code> in <code class="inline">CreateCallbackScreen.kt</code>'s file picker, or <code class="inline">draftAnswers.map { (questionId, answer) -&gt; ... }</code> in <code class="inline">CallbackRepository.kt</code> destructuring a <code class="inline">Map</code> entry while iterating.</p>`
+      },
+    ]
+  },
+  {
+    id: "coroutines", title: "Coroutines &amp; Async", color: "var(--blue)",
+    sub: "How this app does anything that touches the network, a database, or a delay — and the concurrency traps that come with it.",
+    items: [
+      {
+        q: "What is a `suspend` function, and how is it different from just running something on a background thread?",
+        a: `<p><code class="inline">suspend</code> marks a function that can pause and resume without blocking the thread it's running on — the compiler transforms it into a state machine under the hood. Calling one requires a coroutine (or another <code class="inline">suspend</code> function). Every repository network call in this app — <code class="inline">suspend fun scoreDraft(): ScoreResultDto?</code>, <code class="inline">suspend fun refreshQuestionnaire(lang: String = ...)</code> — is written this way so it reads top-to-bottom like synchronous code, with no callback pyramids, while never blocking the UI thread.</p>`
+      },
+      {
+        q: "What's the difference between `rememberCoroutineScope()` and `lifecycleScope` — and when would you use which?",
+        a: `<p><code class="inline">rememberCoroutineScope()</code> gives a Composable a <code class="inline">CoroutineScope</code> tied to that Composable's presence in the composition — it's cancelled when the Composable leaves. It's used for coroutines launched from a <em>user action</em> (a button click), not tied to the Composable's own setup. <code class="inline">HealthCheckScreen.kt</code>'s scoring button does exactly this: <code class="inline">val coroutineScope = rememberCoroutineScope()</code>, then <code class="inline">coroutineScope.launch { isScoring = true; ... }</code> inside the <code class="inline">onClick</code>.</p>
+        <p><code class="inline">lifecycleScope</code> (used on an <code class="inline">Activity</code>, like <code class="inline">MeetingActivity.kt</code>'s <code class="inline">lifecycleScope.launch { TeleconsultRepository.completeSession(...) }</code>) is tied to the Activity's own lifecycle instead — appropriate when the work isn't scoped to one Composable's lifetime, like the Activity's own <code class="inline">onCallEnded</code> handler which needs to survive regardless of which Composable triggered it.</p>`
+      },
+      {
+        q: "If a coroutine is launched and the screen navigates away before it finishes, what happens to it?",
+        a: `<p>It depends entirely on which scope launched it. A <code class="inline">rememberCoroutineScope()</code>-launched coroutine is cancelled automatically once that Composable leaves composition — so an in-flight network call started from a screen the user has since navigated away from simply stops, and any state writes inside it never execute (cooperative cancellation; a <code class="inline">suspend</code> call like Retrofit's will throw <code class="inline">CancellationException</code> at its next suspension point).</p>
+        <p>A <em>singleton repository's own</em> coroutine (e.g. one launched inside <code class="inline">CallbackRepository</code> itself, not tied to any screen) is not cancelled by navigation — which is exactly why upload progress in <code class="inline">CreateCallbackScreen.kt</code>'s file picker survives screen rotation and backgrounding: the upload coroutine isn't scoped to the Composable at all.</p>`
+      },
+      {
+        q: "What's a classic concurrency bug you could introduce by launching two coroutines from the same button without disabling it first?",
+        a: `<p>A double-tap race: if "See urgency result" didn't disable itself while <code class="inline">isScoring</code> is true, two overlapping <code class="inline">scoreDraft()</code> calls could resolve out of order — if the first (now-stale) call's response arrives <em>after</em> the second's, it would clobber <code class="inline">scoreError</code>/<code class="inline">isScoring</code> with the wrong outcome. <code class="inline">HealthCheckScreen.kt</code> guards against exactly this with <code class="inline">enabled = !isScoring &amp;&amp; question.isAnswered(currentAnswer)</code> on the button — disabling it for the duration of the in-flight call is the whole defense, since nothing here uses <code class="inline">Job</code> cancellation to kill a superseded request.</p>`
+      },
+      {
+        q: "Why does `scoreDraft()` catch every `Exception` and just return `null` instead of letting it propagate?",
+        a: `<p>Because the caller — the "See urgency result" button — has exactly one fallback behavior for any failure: show a generic retry message (<code class="inline">scoreError = true</code>). There is no scenario where distinguishing a network timeout from a malformed response changes what the UI does next, so collapsing every failure mode into "result == null" keeps the call site simple:</p>
+        <pre class="code">return <span class="k">try</span> {
+    <span class="c">// ... network call ...</span>
+    <span class="k">if</span> (resp.isSuccessful &amp;&amp; body != <span class="k">null</span>) { draftScoreResult = body; body } <span class="k">else</span> <span class="k">null</span>
+} <span class="k">catch</span> (e: Exception) { <span class="k">null</span> }</pre>
+        <p>The tradeoff: you lose the specific error for debugging unless you also log it (which, worth noting, this particular function doesn't — a reasonable thing to add if this flow starts getting support tickets).</p>`
+      },
+      {
+        q: "What's the difference between a `List` backing a Compose list and a `mutableStateListOf`?",
+        a: `<p>A plain Kotlin <code class="inline">List</code>/<code class="inline">MutableList</code> mutation (like <code class="inline">.add()</code>) is invisible to Compose — nothing tells the recomposer a read it took a snapshot of has changed. <code class="inline">mutableStateListOf&lt;T&gt;()</code> is Compose's snapshot-aware list: every structural mutation (<code class="inline">add</code>, <code class="inline">removeAt</code>, indexed assignment) is tracked, so any Composable that read the list recomposes automatically. <code class="inline">CallbackRepository.draftDocuments</code> is declared this way specifically so <code class="inline">CreateCallbackScreen.kt</code>'s attachment list updates live as uploads complete.</p>`
+      },
+    ]
+  },
+  {
+    id: "compose-core", title: "Jetpack Compose — Core Concepts", color: "var(--green)",
+    sub: "The mental model behind every screen file in ui/home/ — recomposition, state, and the building blocks that show up in every PR.",
+    items: [
+      {
+        q: "What is recomposition, actually, and what triggers it?",
+        a: `<p>Compose builds a UI by calling composable functions; when a piece of <code class="inline">State&lt;T&gt;</code> a composable <em>read</em> changes, Compose re-invokes just that composable (and its descendants that also read the changed state) — not the whole screen. This is "recomposition." It's triggered purely by reads of observable state objects (<code class="inline">MutableState</code>, <code class="inline">mutableStateListOf</code>, etc.) during the last composition — mutating a plain variable that was never wrapped in one of these does nothing, silently.</p>`
+      },
+      {
+        q: "What does `remember { }` actually give you, and what's its lifetime?",
+        a: `<p><code class="inline">remember</code> caches a value across recompositions of the <em>same composable instance</em> — without it, every recomposition would re-run the initializer and reset your state to its default, defeating the purpose of having state at all. Its lifetime is tied to the composable staying <em>in the composition</em>: if that composable is removed (conditionally hidden, or the screen is navigated away from and its composition disposed), the remembered value is gone, and a fresh call to the composable re-runs the initializer from scratch.</p>
+        <p>That last clause is the one that bites people — see the next question.</p>`
+      },
+      {
+        q: "What's `rememberSaveable`, and why does this app need it in Navigation-Compose specifically?",
+        a: `<p><code class="inline">rememberSaveable</code> does everything <code class="inline">remember</code> does, <em>plus</em> it serializes the value into a <code class="inline">Bundle</code>-compatible saved-state registry, so it survives not just recomposition but also process death/config changes — and, critically for this app, <strong>Navigation-Compose's screen-disposal behavior</strong>.</p>
+        <p><code class="inline">NavHost</code> only keeps the <em>current</em> back-stack entry's content in composition — navigate forward (A → B), and A's composable is torn out of the composition tree entirely, not just hidden. Pop back from B to A, and A's composable function runs again as a <em>fresh call</em>. Plain <code class="inline">remember</code> has no saved value to restore from in that scenario, so it falls back to its initializer — silently resetting whatever state it held.</p>
+        <p>This bit <code class="inline">HealthCheckScreen.kt</code> directly: <code class="inline">onCompleted</code> does a plain <code class="inline">navController.navigate("callback_request_details")</code> with no <code class="inline">popUpTo</code>, so the health-check screen stays on the back stack but gets disposed while not visible. Its <code class="inline">currentQuestion</code> was declared with plain <code class="inline">remember</code> — so pressing Back from the summary screen always landed on question 1, regardless of which question the patient was last on, because the composable's state had been silently wiped on dispose. Changing one word (<code class="inline">remember</code> → <code class="inline">rememberSaveable</code>) fixed it completely — full case study in the <a href="#cases">Real Bug Case Studies</a> section.</p>`
+      },
+      {
+        q: "What is state hoisting, and why would I bother pulling `var` out of a child composable?",
+        a: `<p>State hoisting means a composable takes its state as a parameter plus an <code class="inline">onValueChange</code>-style callback, rather than owning that state itself — the caller "hoists" the state up to wherever it needs to be shared or survive longer than the child's own lifetime. It's how a single piece of truth (e.g. which preferred-time chip is selected) can be read by multiple sibling composables, or persisted by a parent that outlives the child.</p>`
+      },
+      {
+        q: "What's `LaunchedEffect`, and what does its key parameter actually control?",
+        a: `<p><code class="inline">LaunchedEffect(key)</code> runs a coroutine the first time it enters composition, and <em>re-runs it from scratch</em> (cancelling the previous instance) whenever <code class="inline">key</code> changes between recompositions. <code class="inline">LaunchedEffect(currentLang) { if (...) CallbackRepository.refreshQuestionnaire(currentLang) }</code> in <code class="inline">HealthCheckScreen.kt</code> uses this precisely: it should only refetch when the app's language actually changes, not on every recomposition — passing <code class="inline">Unit</code> as the key (as several simpler effects in this codebase do) means "run exactly once, never again, regardless of recomposition."</p>`
+      },
+      {
+        q: "How is a `WebView` embedded in `MeetingActivity.kt`, and why isn't it wrapped in `AndroidView`?",
+        a: `<p>Jetpack Compose has an <code class="inline">AndroidView</code> composable specifically for embedding legacy Android <code class="inline">View</code>s — but <code class="inline">MeetingActivity.kt</code> deliberately avoids it for the call <code class="inline">WebView</code>. The comment in that file explains why: when wrapped in <code class="inline">AndroidView</code>, Compose's own HWUI canvas intercepts the <code class="inline">WebView</code>'s internal <code class="inline">SurfaceView</code> (used for WebRTC video rendering), making the video tiles render blank.</p>
+        <p>Instead, the <code class="inline">WebView</code> is added as a direct child of a plain <code class="inline">FrameLayout</code> that <em>also</em> hosts a <code class="inline">ComposeView</code> (for the floating chat overlay) as a sibling — mixing the view systems side-by-side rather than nesting one inside the other's rendering path.</p>`
+      },
+      {
+        q: "Why does the file picker in `CreateCallbackScreen.kt` need both a permission launcher and a document-picker launcher?",
+        a: `<p><code class="inline">rememberLauncherForActivityResult</code> wraps the modern Activity Result API — one launcher for <code class="inline">ActivityResultContracts.RequestMultiplePermissions()</code> (asking for <code class="inline">READ_MEDIA_IMAGES</code> on API 33+, <code class="inline">READ_EXTERNAL_STORAGE</code> below it) and a separate one for <code class="inline">ActivityResultContracts.OpenDocument()</code> (the actual system file/document picker UI). <code class="inline">openFilePicker()</code> checks whether the permission is already granted and skips straight to the document picker if so — only falling through to the permission request first if it isn't, with the permission launcher's own callback immediately chaining into the document picker on a grant.</p>`
+      },
+    ]
+  },
+  {
+    id: "architecture", title: "This App's Architecture &amp; Patterns", color: "var(--orange)",
+    sub: "The conventions that repeat across every feature module — not generic Android advice, but how this specific codebase is actually put together.",
+    items: [
+      {
+        q: "What's the repository pattern used here, and why is each one a Kotlin `object` (singleton) rather than a class you instantiate?",
+        a: `<p>Every feature has a <code class="inline">XxxRepository</code> — <code class="inline">CallbackRepository</code>, <code class="inline">TeleconsultRepository</code>, <code class="inline">MedicationRepository</code> — declared as a Kotlin <code class="inline">object</code>. That means exactly one instance exists for the whole app process, reachable from anywhere without dependency injection. It holds both the cached, observable data (<code class="inline">mutableStateListOf</code>, <code class="inline">mutableStateMapOf</code>, load-state enums) <em>and</em> the <code class="inline">suspend</code> functions that fetch/mutate it via Retrofit.</p>
+        <p>The upside this app leans on constantly: state genuinely survives screen navigation (no ViewModel-per-screen re-fetch dance), which is exactly what made the "draft reason disappearing" bug fixable with a one-line read instead of a bigger state-restoration mechanism — the data was never actually gone, the <em>screen's own local copy of it</em> just wasn't re-synced on return.</p>
+        <p>The tradeoff: a singleton's state is genuinely global and long-lived, so every repository needs an explicit <code class="inline">reset()</code> called on logout (<code class="inline">PatientAuthManager.logout()</code>), or the next patient to log in on the same device session would inherit the previous one's cached data.</p>`
+      },
+      {
+        q: "How does this app authenticate its network calls, and where does the Bearer token actually come from?",
+        a: `<p>Every repository call builds its request with an explicit <code class="inline">"Bearer ${'$'}{token}"</code> header, where <code class="inline">token</code> comes from <code class="inline">PatientAuthManager.currentPatient?.accessToken</code> — a short-lived JWT. <code class="inline">RetrofitClient.kt</code> wires an OkHttp interceptor (<code class="inline">retryInterceptor</code>, visible in the stack traces whenever a request fails) that sits in the middle of the call chain for retry/logging, below the top-level auth header that each repository function attaches itself.</p>
+        <p>If <code class="inline">accessToken</code> is <code class="inline">null</code> (no logged-in session), repository functions consistently bail out early — e.g. <code class="inline">refreshRecipients()</code>'s <code class="inline">val token = PatientAuthManager.currentPatient?.accessToken ?: run { ...; return }</code> — rather than firing an unauthenticated request that would just 401.</p>`
+      },
+      {
+        q: "What does `LoadState` buy you over a simpler `isLoading: Boolean` flag?",
+        a: `<p>A boolean collapses "never fetched yet" and "fetched and empty" into the same false value, and can't represent "fetch failed, show a retry button" without a second flag alongside it. <code class="inline">LoadState.IDLE / LOADING / LOADED / ERROR</code> makes every one of those a distinct, exhaustively-handled branch in the screen's <code class="inline">when</code> — and <code class="inline">questionnaireShouldFetch get() = loadState == IDLE || loadState == ERROR</code> is a clean, self-documenting condition for "should I trigger a refetch," which a boolean pair couldn't express as directly.</p>`
+      },
+      {
+        q: "How does Navigation-Compose's back stack work in this app, and what's the difference between `navigate()` and `navigate() { popUpTo(...) }`?",
+        a: `<p>Every destination is a string route registered in a single <code class="inline">NavHost</code> (see <code class="inline">NewNavigation.kt</code>). Plain <code class="inline">navController.navigate("callback_request_details")</code> pushes a new entry on top of the stack, leaving everything below it intact — pressing Back later pops back to exactly where you were. <code class="inline">navigate("callback_list") { popUpTo("callback_list") { inclusive = false } }</code> additionally clears every entry <em>above</em> (and optionally including, if <code class="inline">inclusive = true</code>) the named destination before pushing — used throughout the callback flow to make sure "I sent the request" or "I cancelled" can't be undone by pressing Back into a half-finished draft screen.</p>
+        <p>A subtlety worth internalizing: the system/gesture back button does <strong>not</strong> automatically call a screen's own <code class="inline">onBack: () -&gt; Unit</code> parameter — that's just a composable-level callback your own UI (a header arrow, a Cancel button) chooses to invoke. <code class="inline">NavHost</code> wires the actual hardware back button to <code class="inline">popBackStack()</code> on its own, bypassing any custom <code class="inline">onBack</code> logic entirely unless you explicitly intercept it with <code class="inline">BackHandler</code>.</p>`
+      },
+      {
+        q: "What is `BackHandler`, and when does a screen in this app actually need one?",
+        a: `<p><code class="inline">androidx.activity.compose.BackHandler(onBack = { ... })</code> intercepts the system back press (hardware key or gesture) and runs your lambda <em>instead of</em> <code class="inline">NavHost</code>'s default pop. Most screens don't need this — but any screen where leaving must do more than "just pop back" (e.g. clearing in-progress draft state) does.</p>
+        <p><code class="inline">CreateCallbackScreen.kt</code> is the concrete example: its header back-arrow and its "Cancel" button both call a passed-in <code class="inline">onBack</code> that clears the whole draft (<code class="inline">CallbackRepository.clearDraft()</code>) before popping — but without a <code class="inline">BackHandler</code>, a swipe-back gesture bypassed that cleanup entirely, silently leaving the reason/contact/documents populated for whatever attempt came next. Adding <code class="inline">BackHandler(onBack = onBack)</code> routed the system gesture through the identical cleanup logic.</p>`
+      },
+      {
+        q: "How does the app decide when to show a full-screen incoming call (`IncomingCallActivity`) versus a normal in-app notification?",
+        a: `<p><code class="inline">FcmService.kt</code> dispatches on the FCM payload's <code class="inline">data["type"]</code> field: <code class="inline">"incoming_call"</code> routes to a dedicated handler that launches <code class="inline">IncomingCallActivity</code> directly (a full-screen, ringing UI, independent of whatever screen the app happens to be showing) via a foreground service, matching how a real phone call interrupts whatever you're doing. Every other category — <code class="inline">"appointment"</code>, <code class="inline">"task"</code>, <code class="inline">"medication"</code>, etc. — goes through a separate, generic <code class="inline">"notification"</code> handler that just posts a normal Android notification on the shared <code class="inline">linktop_reminders_channel</code> channel, the same path the backend's generic <code class="inline">notify_patient()</code> helper always targets.</p>`
+      },
+      {
+        q: "What's the pattern for showing an urgency-dependent question flow, like the callback pre-screening questionnaire?",
+        a: `<p>A single composable (<code class="inline">HealthCheckScreen</code>) holds one mutable "which question am I on" index and renders whichever question that index points to, rather than having a separate route per question. The question content itself — text, type (<code class="inline">single_choice</code> / <code class="inline">multi_choice</code> / <code class="inline">numeric_scale</code> / <code class="inline">yes_no</code>), and options — comes entirely from the backend's questionnaire response, so adding or re-wording a question is a content change on the server, never a mobile release.</p>`
+      },
+    ]
+  },
+  {
+    id: "flows", title: "Full Feature Flows", color: "var(--teal)",
+    sub: "Narrative walkthroughs of the three biggest patient-facing journeys in this app, screen by screen, API call by API call.",
+    flows: [
+      {
+        name: "Teleconsult call — from tapping the video icon to hanging up",
+        desc: "Every entry point funnels into the same join call, and the embedded WebView does the heavy lifting once inside the call.",
+        steps: [
+          { t: "Entry point fires a fresh join", f: "NewNavigation.kt / IncomingCallActivity.kt", d: "Whether the patient taps the video icon on an existing appointment or answers an incoming call, the client calls TeleconsultRepository.joinSession(appointmentId) — a real POST to the backend every single time. There's no client-side caching of the join URL that could ever go stale." },
+          { t: "Backend decides: reuse or re-mint the Watheeq link", f: "patient_teleconsult.py :: join_session", d: "If the patient's invite_status is already \"joined\" (meaning they opened this exact link once before), the backend mints a brand-new room via Watheeq's API and refreshes links for every current invitee together — a Watheeq join link is single-use; reusing an already-opened one bounces to Watheeq's own login screen." },
+          { t: "MeetingActivity launches with the join URL", f: "MeetingActivity.kt :: onCreate", d: "A bare WebView (not AndroidView-wrapped, to preserve WebRTC video rendering) loads the join URL. jsAutoJoin() injects JS to find the name field and \"Join\" button on Watheeq's lobby page and auto-submits it with the patient's display name." },
+          { t: "Reaching the live call is detected by polling the DOM", f: "MeetingActivity.kt :: formGoneCheck", d: "The transition from the join form into the live call is a client-side SPA route change inside Watheeq's page — no new HTTP page load, so onPageFinished never fires for it. Instead, a 1-second poll runs a JS snippet checking whether the pre-join form's input field is still in the DOM; once it's gone, hasReachedMeeting flips true." },
+          { t: "Hanging up is distinguished from a transient glitch", f: "MeetingActivity.kt :: onPageFinished", d: "A reload back to the joinRoom lobby URL while hasReachedMeeting is true could mean a real hangup, or Watheeq's own page transiently bouncing there (e.g. after a device camera-hardware error) and recovering on its own. The app waits 2 seconds, re-checks the form-gone condition, and only treats it as a real hangup if the form is still showing after that grace window." },
+          { t: "Ending the call syncs the backend", f: "MeetingActivity.kt :: onCallEnded", d: "Whether from a detected hangup, the back-press confirmation dialog, or onDestroy's fallback, onCallEnded computes the elapsed call duration and POSTs TeleconsultRepository.completeSession(id, seconds) — the only path that flips the backend session to completed." },
+        ]
+      },
+      {
+        name: "Request Call Back — pre-screening, urgency scoring, and dispatch",
+        desc: "A multi-screen flow with a singleton draft object that survives navigation, scored by the backend rather than the client.",
+        steps: [
+          { t: "Pick a recipient, write a reason, attach documents", f: "CreateCallbackScreen.kt", d: "Selected contact, free-text reason, and uploaded document IDs are written into CallbackRepository (a singleton draft, not screen-local state) the moment \"Continue\" is tapped — and are read back from that same singleton if the patient navigates back here from a later step, so nothing appears to vanish." },
+          { t: "Answer pre-screening questions one at a time", f: "HealthCheckScreen.kt", d: "Questions are fetched from GET /patient-callbacks/questionnaire and rendered one per screen; each answer is written into CallbackRepository.draftAnswers (keyed by question ID) as it's selected." },
+          { t: "Backend computes urgency — never the client", f: "patient_callbacks.py :: POST /score", d: "The mobile app never decides whether a request is STAT or Normal itself. It submits every draft answer to the backend, which sums each option's configured point value against a threshold and returns total_score plus a recommended urgency/preferred-time — this is the one source of truth for the scoring rules, so a policy change never requires a mobile release." },
+          { t: "Review and send", f: "RequestDetailsScreen.kt", d: "Shows the computed urgency, lets the patient pick a preferred callback time slot (gated to the scored urgency — urgent is STAT-only; normal offers Morning/Afternoon/Evening), and finally POSTs the real callback request, writing into the same db.callback_requests collection the staff web platform's recipient inbox reads from." },
+          { t: "Draft cleanup on exit", f: "NewNavigation.kt", d: "Whichever way the patient leaves this flow — sending the request, explicitly cancelling, or backing out of the entry screen entirely — CallbackRepository.clearDraft() runs, so the next attempt never inherits a previous one's leftover contact/reason/answers/documents." },
+        ]
+      },
+      {
+        name: "Teleconsult reschedule — mobile action, staff-visible result",
+        desc: "A short flow, but a good example of how a mobile-originated write has to stay consistent with how the web platform already renders the same data.",
+        steps: [
+          { t: "Pick a new slot", f: "RescheduleAppointmentScreen.kt", d: "The patient picks a new date/time, validated against the physician's actual availability before submission." },
+          { t: "Backend persists the new time and audits the change", f: "patient_teleconsult.py :: reschedule_session", d: "Sets the new scheduled_at, keeps status as \"scheduled\" (never a separate \"rescheduled\" status — that would drop the session out of every view that filters for scheduled calls), and records rescheduled_at / previous_scheduled_at / an incrementing reschedule_count — the exact same audit fields the staff-side reschedule endpoint already wrote, so both paths produce identical, interchangeable data." },
+          { t: "Web platform picks it up automatically", f: "Teleconsult.js / PatientTeleconsultTab.js", d: "The staff dashboard's \"Rescheduled\" badge is gated purely on rescheduled_at being non-null — it doesn't care which side of the app triggered the reschedule. This is why mirroring the staff endpoint's exact field names mattered: get the shape wrong, and the web UI simply never lights up the badge, even though the new time saved correctly underneath." },
+        ]
+      },
+    ]
+  },
+  {
+    id: "cases", title: "Real Bug Case Studies", color: "var(--red)",
+    sub: "Actual defects found and fixed in this codebase, written as before/after teaching examples. Good material for \"tell me about a bug you'd expect to find in a Compose + Navigation codebase\" interview questions.",
+    cases: [
+      {
+        title: "Crash: NullPointerException cancelling a callback request",
+        sym: "Confirming a cancel-reason dialog crashed the app outright (Logcat: FATAL EXCEPTION at CallbackListScreen.kt:210).",
+        bad: "coroutineScope.launch { CallbackRepository.cancel(cancelTarget!!.id, reasonValue) }\nshowDialog = false\ncancelTarget = null",
+        badNote: "launch{} schedules its body to run on a later frame, not immediately. The very next line sets cancelTarget to null synchronously — so by the time the coroutine body actually executes and evaluates cancelTarget!!, the value is already null, and !! throws.",
+        good: "val targetId = cancelTarget!!.id\ncoroutineScope.launch { CallbackRepository.cancel(targetId, reasonValue) }\nshowDialog = false\ncancelTarget = null",
+        goodNote: "Read the value out into an immutable local before scheduling the coroutine or mutating the shared state — the local is captured by value at that point, so the later null-out of cancelTarget can't retroactively affect it.",
+      },
+      {
+        title: "Back button always landed on question 1, not the previous question",
+        sym: "On the pre-screening questionnaire's final question, pressing Back from the summary screen always reset to question 1 instead of showing the last-answered question.",
+        bad: "var currentQuestion by remember { mutableIntStateOf(0) }",
+        badNote: "onCompleted() navigates forward to the summary screen with a plain navigate() (no popUpTo), so the question screen stays on the back stack but its composition is disposed while not visible. Returning via Back recomposes it fresh — and plain remember has no saved value to restore, so it falls back to its initial 0.",
+        good: "var currentQuestion by rememberSaveable { mutableIntStateOf(0) }",
+        goodNote: "rememberSaveable persists across exactly this dispose/recompose cycle (it's designed for it), so the index the patient was actually on is restored instead of reset.",
+      },
+      {
+        title: "Description and selected contact appeared to vanish on Back",
+        sym: "Navigating forward into the health-check flow and then back to the entry screen showed a blank reason field and no selected contact — even though uploaded documents were still there.",
+        bad: "var selectedContact by remember { mutableStateOf&lt;CallbackContact?&gt;(null) }\nvar reason by remember { mutableStateOf(\"\") }",
+        badNote: "\"Continue\" already wrote the current values into the singleton CallbackRepository.draftContact/draftReason — but this screen's own local Compose state was never seeded FROM those fields, only written TO them. Since the screen's composition is disposed on navigate-away (same mechanism as the question-index bug above), returning re-ran the initializer, which always started blank regardless of what had been saved.",
+        good: "var selectedContact by remember { mutableStateOf(CallbackRepository.draftContact) }\nvar reason by remember { mutableStateOf(CallbackRepository.draftReason) }",
+        goodNote: "Seed the initial value from the already-persisted repository field instead of a hardcoded blank. Uploaded documents never had this problem in the first place — that list was always a direct reference to the repository's own mutableStateListOf, never copied into local screen state.",
+      },
+      {
+        title: "System back gesture skipped draft cleanup",
+        sym: "Swiping back out of the Request Call Back entry screen (instead of tapping the header arrow or Cancel) left the next attempt pre-filled with the abandoned draft's reason and documents.",
+        bad: "// onBack prop wired to the header arrow and Cancel button only:\nonBack = { CallbackRepository.clearDraft(); navController.popBackStack() }\n// nothing intercepts the system back gesture",
+        badNote: "NavHost's own built-in handling of the hardware/gesture back button calls navController.popBackStack() directly — it has no awareness of a screen's own onBack composable parameter, which only fires when your own UI explicitly invokes it.",
+        good: "BackHandler(onBack = onBack)",
+        goodNote: "Explicitly intercepting the system back press and routing it through the exact same onBack lambda the header arrow and Cancel button already use guarantees every exit path runs identical cleanup logic.",
+      },
+      {
+        title: "A stale error banner looked like a fresh failure",
+        sym: "After a failed urgency-scoring attempt, going back to change an earlier answer still showed \"Couldn't assess urgency\" — reading as if changing the answer itself had caused a new error.",
+        bad: "// scoreError is only reset at the START of a brand-new scoring attempt:\nonClick = {\n    if (isLastQuestion) {\n        coroutineScope.launch { isScoring = true; scoreError = false; ... }\n    } else { currentQuestion++ }   // no reset here\n}\n// the in-page Back button also never touches scoreError",
+        badNote: "scoreError is real, honest state — it just isn't cleared on every state-invalidating action, only on the next scoring attempt. Navigating between questions is exactly the kind of action that should invalidate a previous error, but nothing told the UI that.",
+        good: "} else {\n    scoreError = false\n    currentQuestion++\n}\n// ...and the same reset added to the in-page Back button's onClick",
+        goodNote: "Clear transient error/result state on every navigation action that changes what's being evaluated, not just when a fresh evaluation starts. The rule of thumb: an error banner's lifetime should match the user's mental model of \"is this still relevant,\" not the lifetime that's merely convenient to code.",
+      },
+    ]
+  },
+  {
+    id: "devices", title: "Physical Devices &amp; Bluetooth Integration", color: "var(--green)",
+    sub: "How this app talks to real vitals hardware — BLE scanning, GATT pairing, parsing a proprietary sensor protocol, the real digital-stethoscope audio pipeline, and where a reading actually ends up once it's off the wire.",
+    items: [
+      {
+        q: "What physical devices does this app actually connect to, and what's bundled to support them?",
+        a: `<p>The primary supported device is the <strong>Linktop HC02</strong>, a multiparameter health monitor (blood pressure cuff, finger-clip SpO2, single-lead ECG/heart rate, temperature). A separate Linktop <strong>digital stethoscope</strong> is also real hardware, not a mockup (see below). Both ship as vendor <code class="inline">.aar</code> files under <code class="inline">app/libs/linktop/</code>: <code class="inline">BleDev_release_v2.7.1.aar</code> / <code class="inline">CssServer_release_v2.6.4.aar</code> / <code class="inline">CssSocket_release_v2.6.4.aar</code> (the HC02's BLE vitals SDK, package <code class="inline">com.linktop.*</code>) and <code class="inline">stethoscope_v1.3.4_release.aar</code> (package <code class="inline">lt.sdk.stethoscope.*</code>, accessed entirely through Java reflection rather than a compile-time dependency). There's also <code class="inline">Otoscope_libUvcSdk_v1.0.7_release.aar</code> for a USB otoscope, out of scope here.</p>
+        <p>An <strong>Omron</strong> BLE connectivity SDK (<code class="inline">omron/omronconnectivitylibrary.aar</code>) is declared in <code class="inline">app/build.gradle.kts</code> and has manufacturer-name heuristics in <code class="inline">DeviceFoundScreen.kt</code>, but nothing wires it into an actual connect flow yet — treat it as a staged future integration, not a device this app can pair with today.</p>
+        <div class="tag-row"><span class="tag gotcha">Gotcha</span></div>
+        <p><code class="inline">data/bluetooth/BluetoothPreferences.kt</code> used to also declare <code class="inline">TARGET_DEVICE_MAC</code>/<code class="inline">TARGET_DEVICE_NAME</code> hardcoded to one specific physical HC02 unit (<code class="inline">"84:C6:92:A8:29:E7"</code> / <code class="inline">"HC02-F2C9DB"</code>) — reading that, it looks like only that one unit could ever work. It didn't actually gate connecting, scanning, or reading data from any device: its only consumers were a sort-order/badge tweak (<code class="inline">isTarget</code>) inside <code class="inline">ui/main/BluetoothDeviceScreen.kt</code>, a legacy screen <code class="inline">MainActivity.kt</code> has commented out of its own nav graph (<code class="inline">// replaced by new UI</code>) and therefore never actually reachable. The real, live pairing pipeline (<code class="inline">BluetoothScanner</code> → <code class="inline">BluetoothPairingManager</code> → <code class="inline">BluetoothPreferences.saveDevice(...)</code> → <code class="inline">attemptAutoConnect()</code>) was always fully dynamic, keyed off whatever MAC the user actually scanned and paired with — any purchased HC02 unit already worked. Both the dead constants and their one cosmetic, unreachable consumer have since been removed.</p>`
+      },
+      {
+        q: "How does scanning for a nearby device work, and what Bluetooth permissions does it actually need?",
+        a: `<p><code class="inline">DeviceScanningScreen.kt</code> scans with the plain Android <code class="inline">BluetoothLeScanner</code> directly — not a vendor SDK call — with no device filter and <code class="inline">ScanSettings.SCAN_MODE_LOW_LATENCY</code>, restarting every 8 seconds so a device that re-enters advertising mode late still gets picked up:</p>
+        <pre class="code">fun scheduleRestart() {
+    restartHandler.postDelayed({
+        scanner?.stopScan(callback)
+        startScan()
+        scheduleRestart()
+    }, 8_000L)
+}</pre>
+        <p>Anything already tracked in <code class="inline">PairedDevicesRepository</code> is filtered out of the results, so only genuinely new hardware shows up in the list; 15 seconds with nothing found routes to <code class="inline">NoDeviceFoundScreen</code>. A second, SDK-agnostic scanner (<code class="inline">data/bluetooth/BluetoothScanner.kt</code>) infers a device "type" purely from its advertised name prefix:</p>
+        <pre class="code">val inferredType = when {
+    deviceName.startsWith("HC02", ignoreCase = true) -&gt; "HealthMonitor"
+    deviceName.startsWith("SpO2", ignoreCase = true) -&gt; "Oximeter"
+    deviceName.startsWith("Ear", ignoreCase = true) -&gt; "EarThermometer"
+    else -&gt; "HealthMonitor"
+}</pre>
+        <p>Permissions are centralized in <code class="inline">util/BluetoothPermissionHelper.kt</code>, varying by API level (it also folds in <code class="inline">RECORD_AUDIO</code> for the stethoscope path):</p>
+        <pre class="code">fun requiredPermissions(): Array&lt;String&gt; {
+    return if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.TIRAMISU) {
+        arrayOf(BLUETOOTH_SCAN, BLUETOOTH_CONNECT, RECORD_AUDIO, POST_NOTIFICATIONS)
+    } else if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.S) {
+        arrayOf(BLUETOOTH_SCAN, BLUETOOTH_CONNECT, RECORD_AUDIO)
+    } else {
+        arrayOf(BLUETOOTH, BLUETOOTH_ADMIN, RECORD_AUDIO, ACCESS_FINE_LOCATION)
+    }
+}</pre>
+        <p>If the radio itself is off, <code class="inline">ui/components/BluetoothPermissionDialog.kt</code> is shown automatically whenever <code class="inline">bluetoothAdapter.isEnabled == false</code> (both in <code class="inline">ConnectedDevicesScreen</code> and <code class="inline">DeviceScanningScreen</code>) — its "Allow Bluetooth" button launches <code class="inline">Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)</code>.</p>`
+      },
+      {
+        q: "Once a device is found, how does pairing actually work — is that Android's standard Bluetooth pairing dialog?",
+        a: `<p>No. <code class="inline">data/bluetooth/BluetoothPairingManager.kt</code> deliberately skips classic bonding/passkey entirely and connects straight over GATT:</p>
+        <pre class="code">// Connect via GATT without bonding (autoConnect = false for immediate connection)
+val gatt = device.connectGatt(context, false, gattCallback, BluetoothDevice.TRANSPORT_LE)</pre>
+        <p>Once <code class="inline">onConnectionStateChange</code> reports <code class="inline">STATE_CONNECTED</code>, it calls <code class="inline">BluetoothConnectionManager.setConnected(...)</code> (persists the pairing) and <code class="inline">gatt.discoverServices()</code> to enumerate what the device actually exposes.</p>
+        <div class="tag-row"><span class="tag gotcha">Gotcha</span></div>
+        <p>Unpairing (<code class="inline">BluetoothPairingManager.unpairDevice</code>) has to call <strong>both</strong> the Linktop SDK's own <code class="inline">disConnectBle()</code> <em>and</em> Android's <code class="inline">removeBond()</code> reflection call — skipping the SDK-level disconnect leaves a real HC02 unit stuck "connected" and un-rediscoverable until the phone itself is restarted. This is a genuine hardware quirk, documented directly in the source rather than discovered the hard way twice.</p>`
+      },
+      {
+        q: "What format do readings actually arrive in over BLE — standard Bluetooth Health profiles, or something proprietary?",
+        a: `<p>Both, side by side. Standard Bluetooth SIG GATT UUIDs are defined in <code class="inline">data/bluetooth/BluetoothConnectionManager.kt</code> —</p>
+        <pre class="code">private val HEART_RATE_SERVICE_UUID = UUID.fromString("0000180D-0000-1000-8000-00805F9B34FB")
+private val HEART_RATE_MEASUREMENT_UUID = UUID.fromString("00002A37-0000-1000-8000-00805F9B34FB")
+private val BLOOD_PRESSURE_SERVICE_UUID = UUID.fromString("00001810-0000-1000-8000-00805F9B34FB")
+private val BLOOD_PRESSURE_MEASUREMENT_UUID = UUID.fromString("00002A35-0000-1000-8000-00805F9B34FB")
+private val TEMPERATURE_MEASUREMENT_UUID = UUID.fromString("00002A1C-0000-1000-8000-00805F9B34FB")</pre>
+        <p>— but the HC02's actual traffic mostly arrives on a <strong>custom characteristic, FFF4</strong>, under a custom service FF27, not the standard ones. <code class="inline">data/bluetooth/BluetoothDataParser.kt</code> says so directly in its own doc comment:</p>
+        <pre class="code">/**
+ * Parse FFF4 custom packet from LinkTop device
+ * This is NOT standard BLE BP format - it's a custom protocol
+ */
+fun parseFFF4Packet(data: ByteArray): VitalData?</pre>
+        <p>A one-byte <code class="inline">subType</code> at the front of the packet discriminates what's inside: <code class="inline">0x02</code> live cuff-pressure during inflation, <code class="inline">0x03</code> status, <code class="inline">0x07</code> final BP result/error, <code class="inline">0x0B</code> ECG waveform samples, <code class="inline">0x1F</code> SpO2 waveform. Because the exact byte layout for the final result isn't formally documented by the vendor, the parser tries a few candidate layouts and keeps whichever one lands in a physiologically plausible range:</p>
+        <pre class="code">val isValid_u8 = sys_u8 in 60..250 &amp;&amp; dia_u8 in 40..150
+val isValid1 = sys1 in 60..250 &amp;&amp; dia1 in 40..150 &amp;&amp; pulse1 in 30..200
+val isValid2 = sys2 in 60..250 &amp;&amp; dia2 in 40..150 &amp;&amp; pulse2 in 30..200</pre>
+        <div class="tag-row"><span class="tag gotcha">Gotcha</span></div>
+        <p>The HC02 also replays its <em>last stored reading</em> within ~2 seconds of notifications being enabled — code explicitly guards against mistaking that cached echo for a brand-new measurement:</p>
+        <pre class="code">val isTooEarly = elapsedTime &lt; MeasurementDurationConfig.MIN_MEASUREMENT_DURATION_MS
+val isTooFewUpdates = bpPressureUpdateCount &lt; MeasurementDurationConfig.MIN_PRESSURE_UPDATES
+val isCachedResult = isTooEarly || isTooFewUpdates</pre>
+        <p>Spec-compliant parsers also exist (<code class="inline">parseBPData()</code> for IEEE 11073-20601 Blood Pressure Measurement with kPa→mmHg conversion, <code class="inline">parseTemperatureData()</code> for the Health Thermometer Service's IEEE-11073 FLOAT format with °F→°C conversion) — these read as defensive/fallback paths for a spec-compliant device, since the HC02 in practice talks FFF4.</p>`
+      },
+      {
+        q: "Is SpO2 parsed the same way as blood pressure and ECG?",
+        a: `<p>No — SpO2 is handled entirely inside the vendor SDK rather than by hand-rolled GATT parsing. <code class="inline">data/bluetooth/SpO2MeasurementManager.kt</code> wraps <code class="inline">com.linktop.MonitorDataTransmissionManager</code> (again via reflection) and just registers a listener:</p>
+        <pre class="code">com.linktop.infs.OnSpO2ResultListener {
+    onSpO2Result(spo2, pulse)
+    onSpO2End()
+    onFingerDetection(state)
+}</pre>
+        <p>The SDK owns the actual GATT plumbing for this measurement internally — this app only consumes its callbacks.</p>`
+      },
+      {
+        q: "Where does a parsed vital reading actually end up — does it hit the backend the instant it arrives over BLE?",
+        a: `<p>Not automatically. <code class="inline">ui/home/measurevitals/components/VitalsStateRepository.kt</code> (a singleton <code class="inline">object</code>) is the authoritative state behind the Measure Vitals screen/vital cards — <code class="inline">refreshFromBackend()</code> GETs the patient's existing readings, and <code class="inline">submitReading(vitalName, displayValue, deviceId)</code> is what actually POSTs a new one:</p>
+        <pre class="code">RetrofitClient.patientVitalsApiService.submitReadings(
+    "Bearer ${'$'}{token}", SubmitVitalsRequest(readings, device_id)
+)</pre>
+        <p><code class="inline">submitReading(...)</code> is called from the Measure Vitals UI flow once a device-driven measurement has completed and the displayed value is confirmed — not fired automatically the moment a GATT notification lands. On the backend, this hits <strong><code class="inline">routers/patient_vitals.py</code></strong>'s <code class="inline">POST /mobile/patient-vitals/readings</code>:</p>
+        <pre class="code">reading = VitalReading(patient_id=patient_id, vital_type=item.vital_type, value=float(item.value),
+                        source="patient_app", device_id=payload.device_id, ...)
+await db.rpm_readings.insert_one(dict(doc))
+alert = await _evaluate_and_alert(db, patient_id, facility_id, doc, None)</pre>
+        <p>Only 7 <code class="inline">vital_type</code> values are accepted from the mobile app: <code class="inline">heart_rate, bp_systolic, bp_diastolic, spo2, temperature, respiratory_rate, weight</code>. This shares its threshold/alert logic with <code class="inline">routers/rpm.py</code> (the staff-recorded-vitals path) and pages staff via <code class="inline">notify_patient()</code> for a critical reading.</p>
+        <p>A separate path exists purely for <em>device</em> status: <code class="inline">ConnectedDevicesScreen.kt</code>'s <code class="inline">pushDeviceToBackend()</code> PUTs to <strong><code class="inline">routers/patient_devices.py</code></strong>'s <code class="inline">/mobile/patient-devices/register</code> every time a device connects or its battery level changes, so the staff web console's per-patient Device Status tab stays live — that router only accepts <code class="inline">device_type</code> of <code class="inline">"multiparameter"</code> or <code class="inline">"stethoscope"</code>.</p>`
+      },
+      {
+        q: "How does the app remember a paired device across app restarts, and what happens on next launch?",
+        a: `<p><code class="inline">data/bluetooth/BluetoothPreferences.kt</code> (a SharedPreferences-backed singleton) persists just the essentials — MAC address, device name, inferred type:</p>
+        <pre class="code">fun saveDevice(device: BluetoothDeviceModel) {
+    prefs?.edit()?.apply {
+        putString(KEY_DEVICE_ADDRESS, device.address)
+        putString(KEY_DEVICE_NAME, device.name)
+        putString(KEY_DEVICE_TYPE, device.type)
+        putBoolean(KEY_HAS_PAIRED_DEVICE, true)
+        apply()
+    }
+}</pre>
+        <p>Separately, <code class="inline">ui/home/devices/PairedDevicesRepository.kt</code> persists a richer per-device UI model as its own JSON blob — <code class="inline">lastReading</code>, <code class="inline">lastReadingTime</code> (a display string like <code class="inline">"3:45 PM"</code>, not an epoch timestamp), <code class="inline">batteryPercent</code>, and a <code class="inline">removedAddresses</code> blocklist so an explicitly-unpaired device can never silently reappear on the next scan.</p>
+        <p>On app launch, <code class="inline">BluetoothConnectionManager.attemptAutoConnect()</code> reads the saved MAC and reconnects — note <code class="inline">autoConnect = true</code> here, the opposite of the initial-pairing call above, since this is a background reconnect rather than a user-initiated one:</p>
+        <pre class="code">device.connectGatt(context, true, gattCallback, BluetoothDevice.TRANSPORT_LE)</pre>
+        <p>Devices restored from the cached JSON always start in a <code class="inline">NEEDS_SYNC</code> status rather than showing as immediately "Connected" — <code class="inline">syncFromConnectionManager()</code> only flips that once the live Bluetooth stack actually confirms it, so a stale badge from cache alone is never shown.</p>`
+      },
+      {
+        q: "Is the digital stethoscope real hardware integration, or is that feature mocked/simulated?",
+        a: `<p>Real — this is a genuine BLE audio pipeline, not a placeholder. <code class="inline">viewmodel/StethoscopeViewModel.kt</code> loads <code class="inline">lt.sdk.stethoscope.StethoscopeTool</code> via <code class="inline">Class.forName(...)</code> and registers four proxy listeners built with <code class="inline">java.lang.reflect.Proxy</code> (<code class="inline">OnBleScanListener</code>, <code class="inline">OnBleWorkListener</code>, <code class="inline">OnDeviceInfoListener</code>, <code class="inline">OnStethoscopeDataListener</code>) since the SDK is linked at runtime, not compile time.</p>
+        <div class="tag-row"><span class="tag gotcha">Gotcha</span></div>
+        <p><code class="inline">isConnected</code> only flips true from the <strong><code class="inline">onBleGattStateChanged</code></strong> callback — never from the <code class="inline">connect()</code> call itself. That's a documented fix for a real race where <code class="inline">startRecordAudio()</code> used to get called before the audio characteristic's notifications were actually enabled on the device side.</p>
+        <p><code class="inline">startMeasurement()</code> calls the SDK's <code class="inline">startRecordAudio()</code>, backed by a 4-second watchdog that retries once if no real PCM sample has arrived yet — distinguishing "still waiting for signal" from "this connection has actually failed":</p>
+        <pre class="code">recordingWatchdogJob = viewModelScope.launch {
+    delay(4_000)
+    if (_uiState.value.isRecording &amp;&amp; !_uiState.value.isReceivingAudio) {
+        if (stillGranted &amp;&amp; retryCount &lt; 1) {
+            runCatching { invokeMethod("stopRecordAudio") }
+            delay(500)
+            attemptStartRecordAudio(mode, retryCount = retryCount + 1)
+        }
+    }
+}</pre>
+        <p><code class="inline">stopMeasurement()</code> drains the buffered <code class="inline">ShortArray</code> and writes a real 16-bit mono PCM <code class="inline">.wav</code> file (8 kHz) via <code class="inline">writeWavFile</code> to <code class="inline">getExternalFilesDir(Environment.DIRECTORY_MUSIC)</code>, plus a <code class="inline">.waveform</code> sidecar of the exact displayed waveform points so a saved recording can be replayed with the identical visual later. <code class="inline">data/repository/StethoscopeRecordingRepository.kt</code> persists the metadata (file path, duration, mode <code class="inline">HEART</code>/<code class="inline">LUNG</code>, auscultation position, heart rate, annotations) in a real Room database, not just in memory — unconfirmed drafts from a prior session are auto-deleted by <code class="inline">cleanupUnconfirmedRecordings()</code>.</p>
+        <p>Sharing a recording (<code class="inline">shareStethoscopeWav</code> in <code class="inline">DigitalStethoscopeScreen.kt</code>) goes through <code class="inline">FileProvider.getUriForFile(context, "${'$'}{packageName}.fileprovider", file)</code> and a plain <code class="inline">Intent.ACTION_SEND</code> share sheet (MIME <code class="inline">audio/wav</code>) — there's no dedicated backend endpoint that uploads the audio itself; <code class="inline">patient_devices.py</code> only registers the stethoscope as a paired <em>device</em>, not its recordings.</p>`
+      },
+      {
+        q: "What happens if Bluetooth gets turned off, or a device disconnects mid-reading?",
+        a: `<p><code class="inline">BluetoothConnectionManager</code> registers a <code class="inline">BroadcastReceiver</code> for <code class="inline">BluetoothAdapter.ACTION_STATE_CHANGED</code>; on <code class="inline">STATE_OFF</code> it force-clears connection state and tears down every tracked GATT connection:</p>
+        <pre class="code">if (state == BluetoothAdapter.STATE_OFF) {
+    _connectionState.value = BluetoothConnectionState.DISCONNECTED
+    _connectedDevice.value = null
+    isGattConnection = false
+    cleanup()
+}</pre>
+        <p>A mid-session GATT drop is handled the same way in both <code class="inline">BluetoothPairingManager</code>'s and <code class="inline">BluetoothConnectionManager</code>'s own <code class="inline">onConnectionStateChange</code>: an abnormal <code class="inline">status</code> code maps to <code class="inline">PairingState.FAILED</code>, a clean disconnect maps to <code class="inline">PairingState.NONE</code>. <code class="inline">ConnectedDevicesScreen.kt</code> surfaces the failure to the UI via <code class="inline">onSyncFailed(deviceName)</code> → <code class="inline">ScannedDeviceCache.failureReason = PairingFailureReason.OUT_OF_RANGE</code> → <code class="inline">PairingFailedScreen.kt</code>.</p>
+        <p>The stethoscope's own 4-second no-signal watchdog (see above) similarly distinguishes a revoked permission mid-session from "no audio signal yet" and surfaces a different message for each, rather than one generic failure state.</p>`
+      },
+      {
+        q: "Step by step: how do I actually pair a new HC02 (or bring up support for a new device model)?",
+        a: `<p>End-to-end, as the app itself walks a patient through it:</p>
+        <pre class="code">1. Power the device on and make sure it's advertising
+   (not already bonded to a different phone).
+2. Open Connected Devices -&gt; Add Device. If Bluetooth is off,
+   BluetoothPermissionDialog prompts ACTION_REQUEST_ENABLE first;
+   BluetoothPermissionHelper.requiredPermissions() gates the rest.
+3. DeviceScanningScreen starts an unfiltered BluetoothLeScanner.startScan(...),
+   restarting every 8s. Already-paired devices (PairedDevicesRepository)
+   are filtered out, so only new hardware appears.
+4. Tapping the discovered device calls
+   device.connectGatt(context, false, callback, TRANSPORT_LE)
+   -- straight to GATT, no classic Android bonding dialog.
+5. On STATE_CONNECTED: gatt.discoverServices(), then
+   BluetoothConnectionManager.enableNotifications() writes the CCCD
+   descriptor per characteristic it cares about (BP uses GATT
+   indications, not notifications; ECG/HR are NOT auto-enabled --
+   those need an explicit manual trigger).
+6. MAC + name + type are saved to BluetoothPreferences and
+   PairedDevicesRepository; ConnectedDevicesScreen.pushDeviceToBackend()
+   PUTs device_type/battery to patient_devices.py so the staff
+   console's Device Status tab reflects it immediately.</pre>
+        <p>To actually add a <em>new</em> device model rather than just pairing another HC02: extend <code class="inline">BluetoothDataParser.kt</code> with its GATT UUIDs or custom-protocol byte layout, add its name prefix to <code class="inline">BluetoothScanner.kt</code>'s type-inference table, and — if it introduces a vital this app doesn't already report — extend <code class="inline">patient_vitals.py</code>'s accepted <code class="inline">vital_type</code> list on the backend too.</p>`
+      },
+    ]
+  },
+];
+
+/* ---------- render ---------- */
+const main = document.getElementById('main');
+const catnav = document.getElementById('catnav');
+let flatQA = [];
+
+DATA.forEach(cat => {
+  const dot = `<span class="dot" style="background:${cat.color}"></span>`;
+  catnav.insertAdjacentHTML('beforeend', `<a href="#${cat.id}">${dot}${cat.title.replace('&amp;','&')}</a>`);
+
+  const section = document.createElement('section');
+  section.className = 'category';
+  section.id = cat.id;
+
+  let inner = `<div class="cat-head"><h2>${cat.title}</h2>`;
+  if (cat.items) inner += `<span class="n">${cat.items.length} questions</span>`;
+  if (cat.flows) inner += `<span class="n">${cat.flows.length} flows</span>`;
+  if (cat.cases) inner += `<span class="n">${cat.cases.length} cases</span>`;
+  inner += `</div><p class="cat-sub">${cat.sub}</p>`;
+
+  if (cat.items) {
+    inner += `<div class="qgrid">`;
+    cat.items.forEach((item, i) => {
+      const qid = `${cat.id}-${i}`;
+      inner += `<details class="qa" data-qid="${qid}">
+        <summary><span class="qnum">${String(i+1).padStart(2,'0')}</span><span>${item.q}</span>
+          <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m9 18 6-6-6-6"/></svg>
+        </summary>
+        <div class="qa-body">${item.a}</div>
+      </details>`;
+      flatQA.push({ qid, text: (item.q + ' ' + item.a).toLowerCase() });
+    });
+    inner += `</div>`;
+  }
+
+  if (cat.flows) {
+    cat.flows.forEach(flow => {
+      inner += `<div class="flowcard"><h3>${flow.name}</h3><p class="fdesc">${flow.desc}</p><div class="flowsteps">`;
+      flow.steps.forEach(s => {
+        inner += `<div class="flowstep"><h4>${s.t}</h4><div class="ftag">${s.f}</div><p style="margin-top:6px">${s.d}</p></div>`;
+      });
+      inner += `</div></div>`;
+    });
+  }
+
+  if (cat.cases) {
+    inner += `<div>`;
+    cat.cases.forEach(c => {
+      inner += `<div class="casecard">
+        <h3>${c.title}</h3>
+        <p class="sym"><strong>Symptom:</strong> ${c.sym}</p>
+        <div class="case-grid">
+          <div class="case-col bad"><div class="lbl">Before</div>
+            <pre class="code">${escapeHtml(c.bad)}</pre>
+            <p>${c.badNote}</p>
+          </div>
+          <div class="case-col good"><div class="lbl">After</div>
+            <pre class="code">${escapeHtml(c.good)}</pre>
+            <p>${c.goodNote}</p>
+          </div>
+        </div>
+      </div>`;
+    });
+    inner += `</div>`;
+  }
+
+  section.innerHTML = inner;
+  main.appendChild(section);
+});
+
+function escapeHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ---------- search ---------- */
+const qInput = document.getElementById('q');
+const countEl = document.getElementById('count');
+const totalQA = flatQA.length;
+function updateCount(visible){ countEl.textContent = visible === totalQA ? `${totalQA} questions` : `${visible} / ${totalQA}`; }
+updateCount(totalQA);
+
+qInput.addEventListener('input', () => {
+  const term = qInput.value.trim().toLowerCase();
+  let visible = 0;
+  flatQA.forEach(({qid, text}) => {
+    const el = document.querySelector(`[data-qid="${qid}"]`);
+    if (!el) return;
+    const match = !term || text.includes(term);
+    el.hidden = !match;
+    if (match) { visible++; if (term) el.open = true; }
+  });
+  // hide category headers with zero visible matches
+  DATA.forEach(cat => {
+    if (!cat.items) return;
+    const sectionEl = document.getElementById(cat.id);
+    const anyVisible = cat.items.some((_, i) => {
+      const el = document.querySelector(`[data-qid="${cat.id}-${i}"]`);
+      return el && !el.hidden;
+    });
+    sectionEl.style.display = (term && !anyVisible) ? 'none' : '';
+  });
+  updateCount(term ? visible : totalQA);
+});
+</script>
+
+</body></html>
